@@ -28,7 +28,7 @@
 
 > It can serve the purpose of explaining graph algorithms in an intuitive way and visual way ( other than the purpose of helping me kill my boredom on a lazy Sunday )  
 
-> To try out go to: [Six Degrees of Seperation](http://sixdegreeofsep.surge.sh)
+> To try out go to: [Six Degrees of Seperation](https://sixdegreeofsep.surge.sh)
 
 
 ##### Demo 
