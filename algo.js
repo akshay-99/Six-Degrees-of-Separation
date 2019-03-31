@@ -27,7 +27,7 @@ var bfs = async function(s)
             try{
                 f = await fetch("https://api.github.com/users/"+splitted[0]+"/followers?per_page=100", {
                     headers: {
-                        Authorization: "Basic "+btoa('akshay-99:295b0e1bdd1e8b05619eee8a7a50d3fa7912f99c')
+                        Authorization: "Basic "+btoa('testtemp998:ec2004849017820367a82b055a78de18f452d904')
                     }
                 });
                 f = await f.json()
@@ -39,7 +39,7 @@ var bfs = async function(s)
                 console.log(error);
                 f = await fetch("https://api.github.com/users/"+splitted[0]+"/followers?per_page=100", {
                     headers: {
-                        Authorization: "Basic "+btoa('akshay-99:295b0e1bdd1e8b05619eee8a7a50d3fa7912f99c')
+                        Authorization: "Basic "+btoa('testtemp998:ec2004849017820367a82b055a78de18f452d904')
                     }
                 });
                 f = await f.json()
