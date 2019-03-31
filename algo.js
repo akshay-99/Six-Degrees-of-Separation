@@ -7,7 +7,7 @@ var bfs = async function(s)
         queue = []
         s = s+' 0'+' '+s;
         queue.push(s) 
-        visited.add(s[0])
+        visited.add(s.split(' ')[0])
         
   
         while (queue.length > 0){
@@ -15,7 +15,7 @@ var bfs = async function(s)
             
             s = queue.shift()
             splitted = s.split(' ')
-            console.log (splitted[0]+'\t\t'+splitted[1]+'\t\t'+splitted[2]);
+            //console.log (splitted[0]+'\t\t'+splitted[1]+'\t\t'+splitted[2]);
             imgurl = await fetch("https://api.github.com/users/"+splitted[0]+"/followers", {
                 headers: {
                     Authorization: "Basic "+btoa('akshay-99:295b0e1bdd1e8b05619eee8a7a50d3fa7912f99c')
