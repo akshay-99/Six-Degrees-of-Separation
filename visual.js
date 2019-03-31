@@ -24,26 +24,29 @@ function setup()
     
     var canvasDiv = document.getElementById('vis');
     var width = canvasDiv.offsetWidth ;
-    var cnv = createCanvas(window.innerWidth*0.95, window.innerHeight*0.8);
+    var cnv = createCanvas(canvasDiv.offsetWidth, window.innerHeight*0.7);
     cnv.parent('vis');
     cnv.mousePressed(mousePressedCanvas);
     rectMode(CENTER);
     
 }
 
-// function mouseWheel(event) {
-//     zoom += sensitivity * event.delta;
-//     zoom = constrain(zoom, zMin, zMax);
-//     print(event.delta+' '+zoom);
-//     //uncomment to block page scrolling
-//     return false;
-//   }
+function mouseWheel(event) {
+    zoom += sensitivity * event.delta;
+    zoom = constrain(zoom, zMin, zMax);
+    print(event.delta+' '+zoom);
+    //uncomment to block page scrolling
+    return false;
+  }
 
 function draw()
 {
     background(200);
-    translate(tx, ty);
+    translate(width/2+tx, height/2+ty);
+    //translate(tx, ty);
     scale(zoom);
+    
+    
     if(run)
     {
         drawusers();
@@ -52,14 +55,7 @@ function draw()
     
     
 }
-function mouseDragged() {
-	
-				tx += mouseX-pmouseX;
-				ty += mouseY-pmouseY;
-				
 
-  return false;
-}
 function adduser(user, d, path)
 {
     if( d > data.currentdeg)
@@ -85,29 +81,46 @@ function adduser(user, d, path)
 function drawusers()
 {
     userlist.forEach(user => {
+        
         if(user.color=='#fff')
             user.displaypath();
         else
             user.displaypathbold();
     });
     userlist.forEach(user => {
+        if(user.path.split('_').length-1 == 0) user.color='#00f';
         user.display();
     });
-}
-
-
-
-function drawuser(user, posangle, radius)
-{
-    posangle = posangle * (Math.PI/180)
     
-    xpos = width*0.5 + radius* Math.cos(posangle);
-    ypos = height*0.5 + radius * Math.sin(posangle);
-    ellipse(xpos, ypos, 50, 50);
 }
 
-var runalgo = function()
+
+var stopalgo = function()
 {
+    stop=true;
+}
+
+
+var runalgo = async function()
+{
+    if(run)
+    {
+        stop = true;
+        await sleep(1000);
+        userlist=[];
+        userdict={};
+        data.radius=0;
+        data.currentdeg=0;
+        data.inthis=10;
+        data.posangle=0;
+        data.sangle=0;
+        queue = [];
+        visited = new Set([]);
+        profilepics = {}
+        degreesobj = {}
+        
+        stop = false;
+    }
     run = 1;
     bfs(document.getElementById('username').value);
 }
@@ -119,9 +132,10 @@ class User{
         this.radius = radius
         this.path = path;
         this.posangle = this.posangle * (Math.PI/180);
-        this.x = width*0.5 + this.radius* Math.cos(this.posangle);
-        this.y = height*0.5 + this.radius * Math.sin(this.posangle);
-        this.color = '#fff'
+        this.x = this.radius* Math.cos(this.posangle);
+        this.y = this.radius * Math.sin(this.posangle);
+        this.color = '#fff';
+        this.intermediate = path.split('_').slice(1, path.length-1);
         
       }
     
@@ -152,8 +166,14 @@ class User{
             
             if(vertices.length >= 2)
             {
-                for(var i = 1; i<vertices.length; i++)
+                for(var i = 1; i<vertices.length; i++){
                     line(userdict[vertices[i-1]].x, userdict[vertices[i-1]].y, userdict[vertices[i]].x, userdict[vertices[i]].y)
+                    if(i!=vertices.length-1)
+                    {
+                        userdict[vertices[i]].color='#ffac59'
+                    }
+                }
+
             }
 
             strokeWeight(1);
@@ -164,17 +184,24 @@ class User{
 
 function mousePressedCanvas() {
         console.log(zoom);
+        donealready = false
 		for (var i = 0; i < userlist.length; i++) {
 			var useri = userlist[i];
-            distance = dist(mouseX, mouseY, useri.x+tx, useri.y+ty);
+            distance = dist(mouseX-width/2, mouseY-height/2, (useri.x)*zoom+tx, (useri.y)*zoom+ty);
             
-			if (distance < 25) {
-				console.log('ssss '+mouseX+' '+tx+' '+useri.x+' '+distance);
+			if (distance < 25*zoom && !donealready) {
+				console.log('ssss '+(mouseX-width/2)+' '+(mouseY-height/2)+' '+useri.x+' '+distance);
                 useri.color = '#f00';
-                infop.innerHTML = '@'+useri.user+'<br/>'
-			} else {
+                
+                document.getElementById('infoh').innerHTML = '<a href="https://github.com/'+useri.user+'">@'+useri.user+'</a><br/>'
+                document.getElementById('infop').innerHTML = 'Separation: '+useri.intermediate.length;
+                donealready=true;
+            } else {
 				
-				useri.color = '#fff';
+                useri.color = '#fff';
+                useri.intermediate.forEach(user => {
+                    user.color='#fff';
+                });
 			}
 		}
 	
@@ -182,3 +209,11 @@ function mousePressedCanvas() {
   return false;
 }
 
+function mouseDragged() {
+	
+    tx += mouseX-pmouseX;
+    ty += mouseY-pmouseY;
+				
+
+  return false;
+}

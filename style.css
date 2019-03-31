@@ -1,13 +1,29 @@
 body{
-    padding: 20px;
+    
     overflow: hidden;
+    background: #555;
+    color:#fff;
 }
 
 #info{
-    min-height:10vh;
+    min-height:15vh;
     border: 1px solid #bbb;
     box-shadow:1px 1px 1px #888;
     padding: 10px;
     font-size:18px;
 }
+
+#main_row{
+    padding: 10px;
+    
+}
+canvas{
+    margin: auto;
+}
+#header{
+    background: #f8f8f8;
+    padding:20px;
+    color:black;
+}
+
 

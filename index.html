@@ -16,17 +16,21 @@
 
     <body>
         <div>
-            <div class="row">
+            <div class="row" id="header">
                     <div class="input-field col s6 m3 ">
                       <input value="akshay-99" id="username" type="text" >
                       <label class="active" for="username">Username</label>
                     </div>
-                    <div class="col s4">
+                    <div class="col s1">
                         <a class="waves-effect waves-light btn" href="javascript:runalgo()">Run</a>
+                    </div>
+                    <div class="col s3">
+                        <a class="waves-effect waves-light btn" href="javascript:stopalgo()">Stop</a>
                     </div>
                     <div class="col s4 m4" >
                         <div id="info">
-                            <p id="infop"></p>
+                            <h6 id="infoh" align="center"></h6>
+                            <p id="infop" align="center"></p>
                         </div>
                     </div>
             </div>
